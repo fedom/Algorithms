@@ -1,0 +1,6 @@
+tags
+*.dot
+*.o
+*.d
+*.out
+.DS_Store
