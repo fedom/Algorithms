@@ -18,7 +18,7 @@ public:
         return to_;
     }
 
-    float Weight() {return weight_;}
+    float Weight() const {return weight_;}
 
     bool operator<(const WeightedDiEdge &rhs) const { return weight_ < rhs.weight_; }
     bool operator>(const WeightedDiEdge &rhs) const { return weight_ > rhs.weight_; }

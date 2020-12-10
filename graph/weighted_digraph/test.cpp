@@ -2,9 +2,11 @@
 //#include "lazy_prim_mst.h"
 //#include "prim_mst.h"
 //#include "kruskal_mst.h"
+#include "common/utils.h"
 #include <iostream>
 #include <set>
 #include <utility>
+#include "dijkstra_shortest_path.h"
 
 using namespace graph;
 
@@ -86,6 +88,25 @@ static void TestDigraph(WeightedDigraph &graph) {
 //
 //    std::cout << "=====" << std::endl;
 //}
+//
+static void TestDijkstraPath(WeightedDigraph &graph) {
+    DijkstraShortestPath dijkstra_path(&graph, 0);
+
+    int target = 5;
+
+    if (dijkstra_path.HasPathTo(target)) {
+    
+        auto path = dijkstra_path.GetPath(target);
+
+        std::string s = string_join(int_vec_to_string_vec(path), "->"); 
+
+        std::cout << "shortest path from 0 to 5 is: ";
+        std::cout << s << " (" << dijkstra_path.DistTo(target) << ")" << std::endl;
+    } else {
+    
+        std::cout << "no path from 0 to 5" << std::endl;
+    }
+}
 
 int main(int argc, char* argv[]) {
     WeightedDigraph graph;
@@ -93,6 +114,7 @@ int main(int argc, char* argv[]) {
     graph.Load("tinyEWG.txt");
 
     TestDigraph(graph);
+    TestDijkstraPath(graph);
 
     return 0;
 }
