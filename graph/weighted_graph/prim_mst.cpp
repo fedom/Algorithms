@@ -21,6 +21,12 @@ PrimMst::PrimMst(WeightedGraph *g)
     pri_queue_.reset(new IndexedPriorityQueue(g->V()));
     pri_queue_->Insert(0, 0);
     
+    // prim mst algorthm has two layers loop:
+    //  1. Outer loop means the mst moving one step forward to capture one vertex. 
+    //  2. The inner loop in Visit() mean adding new crossing edges between two
+    //     subgraph of the cut. The lazy prim mst algorithm add all the crossing
+    //     edges, and the improved version only keep one minist edge to the same target
+    //     vertex in the other subgraph.
     while (!pri_queue_->Empty()) {
         int v = pri_queue_->TopIndex();
         pri_queue_->Pop();
@@ -44,9 +50,12 @@ void PrimMst::Visit(WeightedGraph *g, int v) {
             continue;
         }
 
+        // keep the lastest mst edge state
         dist_to_[j] = e.Weight();
         edge_to_[j] = v;
 
+        // push the adjacent vertics at the crossing edges to the priority queue for next
+        // step to select 
         if (pri_queue_->Contains(j)) {
             pri_queue_->Change(j, e.Weight());
         } else {
