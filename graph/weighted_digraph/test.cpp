@@ -7,6 +7,8 @@
 #include <set>
 #include <utility>
 #include "dijkstra_shortest_path.h"
+#include "weighted_di_topological.h"
+#include "acyclic_shortest_path.h"
 
 using namespace graph;
 
@@ -108,13 +110,52 @@ static void TestDijkstraPath(WeightedDigraph &graph) {
     }
 }
 
+static void TestDiTopological(WeightedDigraph &graph) {
+    WeightedDiTopological topo(&graph);
+
+    if (topo.IsDAG()) {
+        std::string s = string_join(int_vec_to_string_vec(topo.Order()), "->"); 
+        std::cout << "is Dag, topo order is :" << s << std::endl;
+    } else {
+        std::cout << "graph has cycle" << std::endl;
+    }
+}
+
+static void TestAcyclicShortestPath(WeightedDigraph &graph) {
+    WeightedDiTopological topo(&graph);
+    if (topo.IsDAG()) {
+        AcyclicShortestPath acyclic_sp(&graph, 0);
+
+        int target_v = 5;
+
+        std::string s = string_join(int_vec_to_string_vec(acyclic_sp.GetPath(target_v)), "->"); 
+        std::cout << "DAG shortest path is:" << s << " (" << acyclic_sp.DistTo(target_v) << ")" << std::endl;
+
+    } else {
+        std::cout << "graph has cycle" << std::endl;
+    }
+
+
+}
+
 int main(int argc, char* argv[]) {
     WeightedDigraph graph;
 
-    graph.Load("tinyEWG.txt");
+    if (!graph.Load("tinyEWG_nocycle.txt")) {
+        return 0;
+    }
 
+    std::cout << "====TestDigraph====" << std::endl;
     TestDigraph(graph);
+
+    std::cout << "====TestDijkstraPath====" << std::endl;
     TestDijkstraPath(graph);
+
+    std::cout << "====TestDiTopological====" << std::endl;
+    TestDiTopological(graph);
+
+    std::cout << "====TestAcyclicShortestPath====" << std::endl;
+    TestAcyclicShortestPath(graph);
 
     return 0;
 }
