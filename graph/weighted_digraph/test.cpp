@@ -134,14 +134,18 @@ static void TestAcyclicShortestPath(WeightedDigraph &graph) {
     } else {
         std::cout << "graph has cycle" << std::endl;
     }
-
-
 }
 
 int main(int argc, char* argv[]) {
+
+    if (argc < 2) {
+        std::cout << argv[0] << " <graph.txt>" << std::endl;
+        return 0;
+    }
+
     WeightedDigraph graph;
 
-    if (!graph.Load("tinyEWG_nocycle.txt")) {
+    if (!graph.Load(argv[1])) {
         return 0;
     }
 
