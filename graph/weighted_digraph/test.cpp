@@ -9,6 +9,7 @@
 #include "dijkstra_shortest_path.h"
 #include "weighted_di_topological.h"
 #include "acyclic_shortest_path.h"
+#include "bellman_ford_sp.h"
 
 using namespace graph;
 
@@ -165,6 +166,25 @@ static void TestCPM(const char *file_name) {
     }
 }
 
+static void TestBellmanFord(WeightedDigraph *g) {
+
+    BellmanFordSp sp(g, 0);
+
+    int target = 5;
+
+    if (sp.HasNegativeCycle()) {
+        auto cycle = sp.GetNegativeCycle();
+
+        std::string s = string_join(int_vec_to_string_vec(cycle), "->"); 
+        std::cout << "DAG negative cycle is:" << s << std::endl;
+    } else {
+        auto path = sp.GetPath(target);
+
+        std::string s = string_join(int_vec_to_string_vec(path), "->"); 
+        std::cout << "DAG critical path to " << target << " is:" << s << std::endl;
+    }
+}
+
 int main(int argc, char* argv[]) {
 
     if (argc < 2) {
@@ -172,11 +192,12 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-    //WeightedDigraph graph;
+    WeightedDigraph graph;
+    if (!graph.Load(argv[1])) {
+        return 0;
+    }
 
-    //if (!graph.Load(argv[1])) {
-    //    return 0;
-    //}
+    graph.Print(std::string(argv[1]) + ".dot");
 
     //std::cout << "====TestDigraph====" << std::endl;
     //TestDigraph(graph);
@@ -190,8 +211,11 @@ int main(int argc, char* argv[]) {
     //std::cout << "====TestAcyclicShortestPath====" << std::endl;
     //TestAcyclicShortestPath(graph);
 
-    std::cout << "====TestCPM====" << std::endl;
-    TestCPM(argv[1]);
+    //std::cout << "====TestCPM====" << std::endl;
+    //TestCPM(argv[1]);
+
+    std::cout << "====TestBellmanFord====" << std::endl;
+    TestBellmanFord(&graph);
 
     return 0;
 }
