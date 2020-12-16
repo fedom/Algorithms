@@ -136,6 +136,35 @@ static void TestAcyclicShortestPath(WeightedDigraph &graph) {
     }
 }
 
+static void TestCPM(const char *file_name) {
+
+    WeightedDigraph graph;
+
+    if (!graph.LoadCpm(file_name)) {
+        return;
+    }
+
+    graph.Print(std::string(file_name) + ".dot");
+
+    int start_v = graph.V() - 2;
+    int finish_v = graph.V() - 1;
+
+    AcyclicShortestPath acyclic_lp(&graph, start_v, true);
+
+
+
+    std::string s = string_join(int_vec_to_string_vec(acyclic_lp.GetPath(finish_v)), "->"); 
+    std::cout << "DAG critical path is:" << s << " (" << acyclic_lp.DistTo(finish_v) << ")" << std::endl;
+    std::cout << "The lower bound of the whole time is " << acyclic_lp.DistTo(finish_v) << std::endl;
+    std::cout << "all task start and end time:" << std::endl;
+
+    for (int i = 0; i < graph.V() - 2; i++) {
+        float start_time = acyclic_lp.DistTo(i);
+        float end_time = start_time + graph.Adjacent(i)[0].Weight();
+        std::cout << "task_" << i << " " << start_time << " " << end_time << std::endl;
+    }
+}
+
 int main(int argc, char* argv[]) {
 
     if (argc < 2) {
@@ -143,23 +172,26 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-    WeightedDigraph graph;
+    //WeightedDigraph graph;
 
-    if (!graph.Load(argv[1])) {
-        return 0;
-    }
+    //if (!graph.Load(argv[1])) {
+    //    return 0;
+    //}
 
-    std::cout << "====TestDigraph====" << std::endl;
-    TestDigraph(graph);
+    //std::cout << "====TestDigraph====" << std::endl;
+    //TestDigraph(graph);
 
-    std::cout << "====TestDijkstraPath====" << std::endl;
-    TestDijkstraPath(graph);
+    //std::cout << "====TestDijkstraPath====" << std::endl;
+    //TestDijkstraPath(graph);
 
-    std::cout << "====TestDiTopological====" << std::endl;
-    TestDiTopological(graph);
+    //std::cout << "====TestDiTopological====" << std::endl;
+    //TestDiTopological(graph);
 
-    std::cout << "====TestAcyclicShortestPath====" << std::endl;
-    TestAcyclicShortestPath(graph);
+    //std::cout << "====TestAcyclicShortestPath====" << std::endl;
+    //TestAcyclicShortestPath(graph);
+
+    std::cout << "====TestCPM====" << std::endl;
+    TestCPM(argv[1]);
 
     return 0;
 }
