@@ -25,11 +25,11 @@ DijkstraShortestPath::DijkstraShortestPath(WeightedDigraph *g, int s)
         int v = pri_queue_->TopIndex();
         pri_queue_->Pop();
 
-        Visit(g, v);
+        Relax(g, v);
     }
 }
 
-void DijkstraShortestPath::Visit(WeightedDigraph *g, int v) {
+void DijkstraShortestPath::Relax(WeightedDigraph *g, int v) {
     const auto &adj = g->Adjacent(v);
 
     for (auto &e : adj) {

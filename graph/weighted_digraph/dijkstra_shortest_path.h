@@ -16,7 +16,7 @@ public:
     std::vector<int> GetPath(int v);
 
 private:
-    void Visit(WeightedDigraph *g, int v);
+    void Relax(WeightedDigraph *g, int v);
 
     std::vector<float> dist_;
     std::vector<float> path_;
