@@ -10,6 +10,10 @@ public:
     DiTopological(DiGraph *g);
 
     bool IsDAG();
+    
+    // This is a another way to check acyclic
+    bool IsDAG2();
+
     std::vector<int> Order();
 
 private:
@@ -18,6 +22,8 @@ private:
 
     std::vector<int> order_;
     bool is_dag_;
+    DiGraph *g_;
+
 };
 
 }//namespace

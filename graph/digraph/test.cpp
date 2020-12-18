@@ -112,6 +112,9 @@ static void TestTopological(DiGraph *g) {
 
     DiTopological topo(g);
 
+    std::cout << "IsDAG:" << topo.IsDAG() << std::endl;
+    std::cout << "IsDAG2:" << topo.IsDAG2() << std::endl;
+
     if (topo.IsDAG()) {
         std::cout << "topo order is:" << string_join(int_vec_to_string_vec(topo.Order()), ",") << std::endl;
     } else {

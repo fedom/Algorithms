@@ -2,10 +2,11 @@
 #include "di_cycle.h"
 #include "di_depth_first_order.h"
 #include <queue>
+#include <map>
 
 namespace graph {
 
-DiTopological::DiTopological(DiGraph *g) : is_dag_(false) {
+DiTopological::DiTopological(DiGraph *g) : is_dag_(false), g_(g) {
    //InitUseDfs(g);
    InitWithIndegreeTable(g);
 }
@@ -72,4 +73,25 @@ void DiTopological::InitWithIndegreeTable(DiGraph *g) {
     }
 }
 
+
+// This is a another way to check acyclic
+bool DiTopological::IsDAG2() {
+
+    std::map<int, int> node_id_order_index_map;
+
+    for (int i = 0; i < order_.size(); i++) {
+        node_id_order_index_map[order_[i]] = i;
+    }
+
+    for (int n : order_) {
+        for (int adj : g_->Adjacent(n)) {
+            if (node_id_order_index_map[n] > node_id_order_index_map[adj]) {
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
+
+}//namespace graph
