@@ -22,7 +22,7 @@ private:
     std::vector<int> mark_;
     std::vector<WeightedEdge> edges_;
 
-    std::priority_queue<WeightedEdge, std::vector<WeightedEdge>, std::greater<WeightedEdge>> pri_queue;
+    std::priority_queue<WeightedEdge, std::vector<WeightedEdge>, std::greater<WeightedEdge>> pri_queue_;
 };
 
 }//namespace graph

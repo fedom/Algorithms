@@ -28,6 +28,7 @@ void Cycle::Dfs(Graph *g, int v, int s_v) {
     for (int i : adj_v) {
         if (!mark_[i]) {
             Dfs(g, i, v); 
+            // this code is executed while stack backtrace 
             if (HasCycle()) {
                 // all the cycle vertics have been record. Current node already pass the stop vertex.
                 if (dfs_cycle_key_vertex_ == -1) 

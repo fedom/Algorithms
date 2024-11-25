@@ -18,14 +18,14 @@ void LazyPrimMst::Visit(WeightedGraph *g, int v) {
 
     // add the candidates to priority queue
     for (auto &e : adj_edges) {
-        pri_queue.push(e);
+        pri_queue_.push(e);
         std::cout << "push candidate " << e.ToString() << std::endl;
     }
 
     // select the next target edge
-    while (!pri_queue.empty()) {
-        auto e = pri_queue.top();
-        pri_queue.pop();
+    while (!pri_queue_.empty()) {
+        auto e = pri_queue_.top();
+        pri_queue_.pop();
 
         int i = e.Either();
         int j = e.Other(i);
